@@ -1,0 +1,214 @@
+{
+  "bookings": [
+    {
+      "id": 1,
+      "seatNumber": "A02",
+      "area": "靠窗区",
+      "userName": "张三",
+      "userId": "2021001",
+      "phone": "13800138000",
+      "date": "2024-01-20",
+      "startTime": "09:00",
+      "endTime": "12:00",
+      "status": "cancelled",
+      "createdTime": "2024-01-20T10:00:00.000Z",
+      "note": "需要电源插座",
+      "cancelledReason": "管理员取消",
+      "cancelledBy": "admin",
+      "cancelledTime": "2026-08-01T08:54:08.720Z",
+      "updatedTime": "2026-08-02T13:30:03.555Z"
+    },
+    {
+      "id": 2,
+      "seatNumber": "B01",
+      "area": "中间区",
+      "userName": "李四",
+      "userId": "2021002",
+      "phone": "13800138001",
+      "date": "2024-01-20",
+      "startTime": "14:00",
+      "endTime": "18:00",
+      "status": "pending",
+      "createdTime": "2024-01-20T11:00:00.000Z",
+      "note": "小组讨论"
+    },
+    {
+      "seatNumber": "TEST01",
+      "userName": "测试用户",
+      "status": "cancelled",
+      "createdTime": "2026-05-22T00:30:56.034Z",
+      "id": 3,
+      "cancelledReason": "管理员取消",
+      "cancelledBy": "admin",
+      "cancelledTime": "2026-06-05T01:08:12.314Z",
+      "updatedTime": "2026-06-05T01:08:12.314Z"
+    },
+    {
+      "seatNumber": "A01",
+      "area": "靠窗区",
+      "userName": "aaa",
+      "userId": "231214414",
+      "phone": "18822234442",
+      "date": "2026-06-15",
+      "startTime": "08:30",
+      "endTime": "11:30",
+      "note": "",
+      "status": "confirmed",
+      "createdTime": "2026-06-05T01:07:39.367Z",
+      "id": 4,
+      "updatedTime": "2026-06-05T01:08:02.519Z"
+    }
+  ],
+  "seats": [
+    {
+      "id": 1,
+      "number": "A01",
+      "area": "靠窗区",
+      "status": "occupied",
+      "features": [
+        "插座",
+        "台灯"
+      ],
+      "currentUser": "aaa",
+      "description": "靠窗安静",
+      "createdAt": "2024-01-20T08:00:00.000Z",
+      "updatedAt": "2026-06-05T01:07:40.092Z"
+    },
+    {
+      "id": 2,
+      "number": "A02",
+      "area": "靠窗区",
+      "status": "idle",
+      "features": [
+        "插座",
+        "储物柜"
+      ],
+      "currentUser": "张三",
+      "description": "带储物柜",
+      "createdAt": "2024-01-20T08:00:00.000Z",
+      "updatedAt": "2026-08-02T13:30:42.641Z"
+    },
+    {
+      "id": 3,
+      "number": "B01",
+      "area": "中间区",
+      "status": "idle",
+      "features": [
+        "白板"
+      ],
+      "currentUser": "",
+      "description": "带白板",
+      "createdAt": "2024-01-20T08:00:00.000Z",
+      "updatedAt": "2024-01-20T08:00:00.000Z"
+    },
+    {
+      "id": 4,
+      "number": "B02",
+      "area": "中间区",
+      "status": "idle",
+      "features": [
+        "插座",
+        "台灯"
+      ],
+      "currentUser": "",
+      "description": "标准座位",
+      "createdAt": "2024-01-20T08:00:00.000Z",
+      "updatedAt": "2024-01-20T08:00:00.000Z"
+    },
+    {
+      "id": 5,
+      "number": "C01",
+      "area": "后排区",
+      "status": "occupied",
+      "features": [
+        "插座"
+      ],
+      "currentUser": "王五",
+      "description": "后排安静",
+      "createdAt": "2024-01-20T08:00:00.000Z",
+      "updatedAt": "2024-01-20T08:00:00.000Z"
+    },
+    {
+      "id": 6,
+      "number": "C02",
+      "area": "后排区",
+      "status": "maintenance",
+      "features": [
+        "插座",
+        "台灯",
+        "隐私帘"
+      ],
+      "currentUser": "",
+      "description": "VIP座位（维修中）",
+      "createdAt": "2024-01-20T08:00:00.000Z",
+      "updatedAt": "2024-01-20T08:00:00.000Z"
+    }
+  ],
+  "violations": [
+    {
+      "id": 1,
+      "seatNumber": "A03",
+      "userName": "王五",
+      "userId": "2021003",
+      "type": "超时占用",
+      "description": "预约时间结束后未离开座位",
+      "status": "pending",
+      "createdAt": "2024-01-20T14:30:00.000Z",
+      "updatedAt": "2024-01-20T14:30:00.000Z"
+    },
+    {
+      "id": 2,
+      "seatNumber": "B02",
+      "userName": "李四",
+      "userId": "2021002",
+      "type": "噪音干扰",
+      "description": "播放音乐影响他人学习",
+      "status": "processed",
+      "processedBy": "管理员",
+      "processedNote": "已警告处理",
+      "processedAt": "2024-01-20T15:00:00.000Z",
+      "createdAt": "2024-01-20T10:15:00.000Z",
+      "updatedAt": "2024-01-20T15:00:00.000Z"
+    }
+  ],
+  "notices": [
+    {
+      "id": 1,
+      "type": "maintenance",
+      "priority": "medium",
+      "title": "系统维护通知",
+      "content": "自习室管理系统将于今晚22:00-24:00进行维护升级，期间暂停服务",
+      "status": "active",
+      "expireTime": "2024-01-21T00:00:00.000Z",
+      "isRead": false,
+      "createdAt": "2024-01-20T09:00:00.000Z",
+      "updatedAt": "2024-01-20T09:00:00.000Z",
+      "createdBy": "系统管理员"
+    },
+    {
+      "id": 2,
+      "type": "system",
+      "priority": "low",
+      "title": "新功能上线",
+      "content": "自习室预约系统新增座位筛选功能，欢迎使用",
+      "status": "expired",
+      "expireTime": "2024-01-15T00:00:00.000Z",
+      "isRead": false,
+      "createdAt": "2024-01-10T14:00:00.000Z",
+      "updatedAt": "2024-01-10T14:00:00.000Z",
+      "createdBy": "系统管理员"
+    },
+    {
+      "type": "system",
+      "priority": "medium",
+      "title": "放假",
+      "content": "放假休息",
+      "expireTime": "2026-06-01T16:00:00.000Z",
+      "status": "active",
+      "isRead": false,
+      "createdAt": "2026-06-05T01:15:06.929Z",
+      "updatedAt": "2026-06-05T01:15:06.930Z",
+      "id": 3
+    }
+  ]
+}
