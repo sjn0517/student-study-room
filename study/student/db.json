@@ -1,0 +1,47 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "admin",
+      "password": "admin",
+      "role": "admin",
+      "name": "系统管理员"
+    },
+    {
+      "id": 3,
+      "username": "20210001",
+      "password": "123456",
+      "role": "student",
+      "name": "张三",
+      "credit_score": 85,
+      "last_update_time": "2026/5/22 08:26:00"
+    },
+    {
+      "id": 4,
+      "username": "20210002",
+      "password": "654321",
+      "role": "student",
+      "name": "李四",
+      "credit_score": 90,
+      "last_update_time": "2025-04-02 14:00:00"
+    },
+    {
+      "id": 5,
+      "username": "233020725",
+      "password": "123456",
+      "role": "student",
+      "name": "刘六",
+      "credit_score": 100,
+      "last_update_time": "2026/5/22 00:15:43"
+    },
+    {
+      "id": 6,
+      "username": "1234567",
+      "password": "1234567890",
+      "role": "student",
+      "name": "aba",
+      "credit_score": 100,
+      "last_update_time": "2026/8/1 17:23:13"
+    }
+  ]
+}

@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>个人中心 · 智习空间</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="./css/center.css">
+</head>
+<body>
+
+<div class="dashboard">
+    <!-- 顶部导航栏 -->
+    <div class="top-bar">
+        <div class="logo-area">
+            <div class="logo-icon"><i class="fas fa-chalkboard-user"></i></div>
+            <div class="logo-text">智习空间 · 个人中心</div>
+        </div>
+        
+        <div class="nav-buttons">
+            <a href="./index.html" class="nav-btn"><i class="fas fa-home"></i> 首页</a>
+            <a href="#" class="nav-btn active"><i class="fas fa-user-circle"></i> 个人中心</a>
+            
+        </div>
+        
+        <div class="user-quick-info">
+            <div class="credit-badge"><i class="fas fa-star"></i> 信用分 <span id="creditScoreDisplay">85</span></div>
+            <div id="quickInfoName"><i class="fas fa-user-graduate"></i> 用户同学</div>
+            <div id="quickInfoAvatar" class="avatar-large">用</div>
+        </div>
+    </div>
+
+    <!-- 个人中心主内容 -->
+    <div class="profile-container">
+        <!-- 左侧用户信息卡片 -->
+        <div class="user-profile-card">
+            <div id="mainAvatar" class="user-avatar">用</div>
+            <h2 id="mainUserName" class="user-name">用户</h2>
+            <div id="mainUserId" class="user-id">学号: </div>
+            <p class="user-college">
+                <i class="fas fa-map-marker-alt"></i> <span id="collegeText">计算机科学与技术学院</span>
+            </p>
+            
+            <div class="user-stats">
+                <div class="stat-item">
+                    <div class="stat-value" id="totalReservations">12</div>
+                    <div class="stat-label">总预约次数</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="totalHours">36</div>
+                    <div class="stat-label">自习时长(小时)</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="successRate">92%</div>
+                    <div class="stat-label">签到成功率</div>
+                </div>
+            </div>
+            
+            <div class="profile-actions">
+                <button class="profile-action-btn primary" id="editProfileBtn">
+                    <i class="fas fa-user-edit"></i> 编辑个人信息
+                </button>
+                <button class="profile-action-btn" id="changePasswordBtn">
+                    <i class="fas fa-key"></i> 修改密码
+                </button>
+                <button class="profile-action-btn" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i> 退出登录
+                </button>
+              
+            </div>
+        </div>
+
+        <!-- 右侧内容区域 -->
+        <div class="content-area">
+            <!-- 我的预约记录 -->
+            <div class="info-card">
+                <div class="info-card-header">
+                    <h3><i class="fas fa-calendar-alt"></i> 预约记录</h3>
+                    <div class="tab-navigation">
+                        <button class="tab-btn active" data-tab="all">全部记录</button>
+                        <button class="tab-btn" data-tab="active">进行中</button>
+                        <button class="tab-btn" data-tab="history">历史记录</button>
+                    </div>
+                </div>
+                
+                <div class="table-container">
+                    <table class="reservations-table" id="reservationsTable">
+                        <thead>
+                            <tr>
+                                <th>座位号</th>
+                                <th>时间段</th>
+                                <th>时长</th>
+                                <th>状态</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="reservationsTableBody">
+                            <!-- 动态加载预约记录 -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div id="noReservations" class="empty-state" style="display: none;">
+                    <i class="far fa-calendar-times"></i>
+                    <p>暂无预约记录</p>
+                    <button class="action-btn primary" id="goToBooking">立即预约座位</button>
+                </div>
+            </div>
+
+            <!-- 信用积分 -->
+            <div class="info-card">
+                <h3><i class="fas fa-chart-line"></i> 信用积分</h3>
+                
+                <div class="credit-score-container">
+                    <div class="credit-score-display" id="creditScoreValue">85</div>
+                    <div class="credit-progress-bar">
+                        <div class="credit-progress-fill" id="creditProgressFill" style="width: 85%"></div>
+                    </div>
+                    <div class="credit-score-max">85/100</div>
+                </div>
+                
+                <div class="credit-details">
+                    <div class="credit-detail-item">
+                        <div class="credit-detail-label">信用等级</div>
+                        <div class="credit-detail-value" id="creditLevel">优秀</div>
+                    </div>
+                    <div class="credit-detail-item">
+                        <div class="credit-detail-label">累计加分</div>
+                        <div class="credit-detail-value" id="totalAdd">+35</div>
+                    </div>
+                    <div class="credit-detail-item">
+                        <div class="credit-detail-label">累计扣分</div>
+                        <div class="credit-detail-value" id="totalDeduct">-5</div>
+                    </div>
+                    <div class="credit-detail-item">
+                        <div class="credit-detail-label">违约次数</div>
+                        <div class="credit-detail-value" id="violationCount">1</div>
+                    </div>
+                </div>
+                
+                <div class="credit-tip">
+                    <i class="fas fa-info-circle"></i> 信用规则：按时签到+2分，违约扣5分。信用分影响预约权限，请准时签到。
+                </div>
+            </div>
+
+            <!-- 个人设置 -->
+            <div class="info-card">
+                <h3><i class="fas fa-cog"></i> 个人设置</h3>
+                
+                <div class="settings-form">
+                    <div class="form-group">
+                        <label for="notificationSetting">预约提醒</label>
+                        <select id="notificationSetting">
+                            <option value="all">所有提醒</option>
+                            <option value="important" selected>仅重要提醒</option>
+                            <option value="none">关闭提醒</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="autoCheckin">自动签到</label>
+                        <select id="autoCheckin">
+                            <option value="enabled">开启</option>
+                            <option value="disabled" selected>关闭</option>
+                        </select>
+                    </div>
+                    
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="privacySetting" checked>
+                        <label for="privacySetting">公开我的自习状态给好友</label>
+                    </div>
+                    
+                    <div class="settings-actions">
+                        <button class="action-btn primary" id="saveSettingsBtn">保存设置</button>
+                        <button class="action-btn" id="resetSettingsBtn">恢复默认</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 编辑个人信息模态框 -->
+<div id="editProfileModal" class="modal-overlay">
+    <div class="modal-container">
+        <h4><i class="fas fa-user-edit"></i> 编辑个人信息</h4>
+        <div class="form-group">
+            <label>姓名</label>
+            <input type="text" id="editName" placeholder="请输入姓名">
+        </div>
+        <div class="form-group">
+            <label>学院</label>
+            <input type="text" id="editCollege" placeholder="请输入学院">
+        </div>
+        <div class="form-group">
+            <label>联系电话</label>
+            <input type="tel" id="editPhone" placeholder="请输入联系电话">
+        </div>
+        <div class="form-group">
+            <label>电子邮箱</label>
+            <input type="email" id="editEmail" placeholder="请输入电子邮箱">
+        </div>
+        <div class="modal-buttons">
+            <button id="cancelEditBtn" class="btn-outline">取消</button>
+            <button id="saveProfileBtn" class="primary">保存更改</button>
+        </div>
+    </div>
+</div>
+
+<!-- 修改密码模态框 -->
+<div id="changePasswordModal" class="modal-overlay">
+    <div class="modal-container">
+        <h4><i class="fas fa-key"></i> 修改密码</h4>
+        <div class="form-group">
+            <label>当前密码</label>
+            <input type="password" id="currentPassword" placeholder="请输入当前密码">
+        </div>
+        <div class="form-group">
+            <label>新密码</label>
+            <input type="password" id="newPassword" placeholder="请输入新密码（至少6位）">
+        </div>
+        <div class="form-group">
+            <label>确认新密码</label>
+            <input type="password" id="confirmPassword" placeholder="请再次输入新密码">
+        </div>
+        <div class="modal-buttons">
+            <button id="cancelPasswordBtn" class="btn-outline">取消</button>
+            <button id="savePasswordBtn" class="primary">确认修改</button>
+        </div>
+    </div>
+</div>
+
+<!-- 全局提示信息 -->
+<div id="globalToast" class="toast-message"></div>
+
+<script>
+    // 获取当前登录用户
+    function getCurrentUser() {
+        const userStr = localStorage.getItem('currentUser');
+        if (userStr) {
+            try {
+                return JSON.parse(userStr);
+            } catch (e) {
+                console.error('解析当前用户失败:', e);
+                return null;
+            }
+        }
+        return null;
+    }
+
+    // 显示Toast消息
+    function showToast(message) {
+        const toast = document.getElementById('globalToast');
+        toast.textContent = message;
+        toast.classList.add('show');
+        setTimeout(() => {
+            toast.classList.remove('show');
+        }, 2500);
+    }
+
+    // 加载用户信息
+    function loadUserInfo() {
+        const user = getCurrentUser();
+        if (!user) {
+            showToast('请先登录');
+            setTimeout(() => {
+                window.location.href = '登录.html';
+            }, 1500);
+            return;
+        }
+
+        // 更新用户信息显示
+        const mainUserName = document.getElementById('mainUserName');
+        const mainUserId = document.getElementById('mainUserId');
+        const mainAvatar = document.getElementById('mainAvatar');
+        const quickInfoAvatar = document.getElementById('quickInfoAvatar');
+        const quickInfoName = document.getElementById('quickInfoName');
+        const creditScoreDisplay = document.getElementById('creditScoreDisplay');
+        const creditScoreValue = document.getElementById('creditScoreValue');
+        const creditProgressFill = document.getElementById('creditProgressFill');
+        const creditScoreMax = document.querySelector('.credit-score-max');
+        const collegeText = document.getElementById('collegeText');
+
+        if (mainUserName) mainUserName.textContent = user.name || '用户';
+        if (mainUserId) mainUserId.textContent = `学号: ${user.username}`;
+        if (mainAvatar) mainAvatar.textContent = (user.name || '用').charAt(0);
+        if (quickInfoAvatar) quickInfoAvatar.textContent = (user.name || '用').charAt(0);
+        if (quickInfoName) quickInfoName.innerHTML = `<i class="fas fa-user-graduate"></i> ${user.name || '用户'}同学`;
+        if (collegeText) collegeText.textContent = user.college || '计算机科学与技术学院';
+        
+        const creditScore = user.credit_score || 85;
+        if (creditScoreDisplay) creditScoreDisplay.textContent = creditScore;
+        if (creditScoreValue) creditScoreValue.textContent = creditScore;
+        if (creditProgressFill) creditProgressFill.style.width = `${creditScore}%`;
+        if (creditScoreMax) creditScoreMax.textContent = `${creditScore}/100`;
+
+        // 设置信用等级
+        const creditLevel = document.getElementById('creditLevel');
+        if (creditLevel) {
+            if (creditScore >= 90) creditLevel.textContent = '优秀';
+            else if (creditScore >= 70) creditLevel.textContent = '良好';
+            else if (creditScore >= 60) creditLevel.textContent = '及格';
+            else creditLevel.textContent = '较差';
+        }
+    }
+
+    // 打开编辑个人信息模态框
+    function openEditProfileModal() {
+        const user = getCurrentUser();
+        if (!user) return;
+
+        document.getElementById('editName').value = user.name || '';
+        document.getElementById('editCollege').value = user.college || '';
+        document.getElementById('editPhone').value = user.phone || '';
+        document.getElementById('editEmail').value = user.email || '';
+
+        document.getElementById('editProfileModal').classList.add('active');
+    }
+
+    // 关闭编辑个人信息模态框
+    function closeEditProfileModal() {
+        document.getElementById('editProfileModal').classList.remove('active');
+        document.getElementById('editName').value = '';
+        document.getElementById('editCollege').value = '';
+        document.getElementById('editPhone').value = '';
+        document.getElementById('editEmail').value = '';
+    }
+
+    // 保存个人信息
+    async function saveProfile() {
+        const user = getCurrentUser();
+        if (!user) return;
+
+        const name = document.getElementById('editName').value.trim();
+        const college = document.getElementById('editCollege').value.trim();
+        const phone = document.getElementById('editPhone').value.trim();
+        const email = document.getElementById('editEmail').value.trim();
+
+        if (!name) {
+            showToast('请输入姓名');
+            return;
+        }
+
+        // 更新用户信息
+        user.name = name;
+        user.college = college;
+        user.phone = phone;
+        user.email = email;
+
+        // 保存到localStorage
+        localStorage.setItem('currentUser', JSON.stringify(user));
+
+        // 通过API更新到JSON文件
+        try {
+            const response = await fetch('/api/update-profile', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(user)
+            });
+            const result = await response.json();
+            if (!result.success) {
+                console.error('更新个人信息失败:', result.error);
+            }
+        } catch (error) {
+            console.error('更新个人信息失败:', error);
+        }
+
+        // 更新页面显示
+        loadUserInfo();
+        
+        // 更新学院显示
+        const collegeText = document.getElementById('collegeText');
+        if (collegeText && college) {
+            collegeText.textContent = college;
+        }
+
+        closeEditProfileModal();
+        showToast('个人信息更新成功');
+    }
+
+    // 打开修改密码模态框
+    function openChangePasswordModal() {
+        document.getElementById('currentPassword').value = '';
+        document.getElementById('newPassword').value = '';
+        document.getElementById('confirmPassword').value = '';
+        document.getElementById('changePasswordModal').classList.add('active');
+    }
+
+    // 关闭修改密码模态框
+    function closeChangePasswordModal() {
+        document.getElementById('changePasswordModal').classList.remove('active');
+        document.getElementById('currentPassword').value = '';
+        document.getElementById('newPassword').value = '';
+        document.getElementById('confirmPassword').value = '';
+    }
+
+    // 保存密码
+    async function savePassword() {
+        const user = getCurrentUser();
+        if (!user) return;
+
+        const currentPassword = document.getElementById('currentPassword').value.trim();
+        const newPassword = document.getElementById('newPassword').value.trim();
+        const confirmPassword = document.getElementById('confirmPassword').value.trim();
+
+        // 验证当前密码
+        if (currentPassword !== user.password) {
+            showToast('当前密码不正确');
+            return;
+        }
+
+        // 验证新密码
+        if (newPassword.length < 6) {
+            showToast('新密码长度至少为6位');
+            return;
+        }
+
+        // 验证确认密码
+        if (newPassword !== confirmPassword) {
+            showToast('两次输入的密码不一致');
+            return;
+        }
+
+        // 更新密码
+        user.password = newPassword;
+        localStorage.setItem('currentUser', JSON.stringify(user));
+
+        // 通过API更新到JSON文件
+        try {
+            const response = await fetch('/api/update-password', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username: user.username, newPassword })
+            });
+            
+            if (!response.ok) {
+                showToast('密码修改失败: 服务器错误 ' + response.status);
+                return;
+            }
+            
+            const result = await response.json();
+            if (result.success) {
+                showToast('密码修改成功');
+            } else {
+                showToast('密码修改失败: ' + result.error);
+                return;
+            }
+        } catch (error) {
+            console.error('更新密码失败:', error);
+            // 检查是否是网络问题（可能是直接打开文件而非通过服务器）
+            if (error.message.includes('Failed to fetch')) {
+                showToast('请通过服务器访问页面');
+            } else {
+                showToast('密码修改失败，请稍后重试');
+            }
+            return;
+        }
+
+        closeChangePasswordModal();
+    }
+
+    // 退出登录
+    function logout() {
+        if (confirm('确定要退出登录吗？')) {
+            localStorage.removeItem('currentUser');
+            showToast('已退出登录');
+            setTimeout(() => {
+                window.location.href = '登录.html';
+            }, 1000);
+        }
+    }
+
+    let allReservations = [];
+    let currentTab = 'all';
+
+    // 获取状态显示文本和样式类
+    function getStatusInfo(status) {
+        const statusMap = {
+            'confirmed': { text: '已确认', class: 'confirmed' },
+            'pending': { text: '进行中', class: 'pending' },
+            'completed': { text: '已完成', class: 'completed' },
+            'cancelled': { text: '已取消', class: 'cancelled' },
+            'checked_in': { text: '已签到', class: 'checked_in' }
+        };
+        return statusMap[status] || { text: '未知', class: 'unknown' };
+    }
+
+    // 获取预约记录
+    async function fetchReservations() {
+        const user = getCurrentUser();
+        if (!user) return;
+
+        try {
+            const response = await fetch(`/api/reservations?userId=${user.username}`);
+            const result = await response.json();
+            
+            if (result.success) {
+                allReservations = result.reservations;
+                renderReservations(allReservations);
+                updateUserStats();
+            } else {
+                console.error('获取预约记录失败:', result.error);
+            }
+        } catch (error) {
+            console.error('获取预约记录失败:', error);
+            if (error.message.includes('Failed to fetch')) {
+                console.log('使用本地模拟数据');
+                allReservations = [
+                    { id: 1, seatNumber: 'A01', time: '2024-01-15 08:00-10:00', duration: '2小时', status: 'completed' },
+                    { id: 2, seatNumber: 'B05', time: '2024-01-16 14:00-16:00', duration: '2小时', status: 'completed' },
+                    { id: 3, seatNumber: 'C03', time: '2024-01-17 10:00-12:00', duration: '2小时', status: 'pending' },
+                    { id: 4, seatNumber: 'A08', time: '2024-01-18 09:00-11:00', duration: '2小时', status: 'confirmed' },
+                    { id: 5, seatNumber: 'D02', time: '2024-01-12 14:00-16:00', duration: '2小时', status: 'cancelled' }
+                ];
+                renderReservations(allReservations);
+                updateUserStats();
+            }
+        }
+    }
+
+    // 渲染预约记录
+    function renderReservations(reservations) {
+        const tbody = document.getElementById('reservationsTableBody');
+        const noReservations = document.getElementById('noReservations');
+        
+        if (!tbody || !noReservations) return;
+
+        if (reservations.length === 0) {
+            tbody.innerHTML = '';
+            noReservations.style.display = 'block';
+            return;
+        }
+
+        noReservations.style.display = 'none';
+        
+        tbody.innerHTML = reservations.map(res => {
+            const statusInfo = getStatusInfo(res.status);
+            return `
+                <tr>
+                    <td>${res.seatNumber || res.seatNo}</td>
+                    <td>${res.time}</td>
+                    <td>${res.duration}</td>
+                    <td><span class="status-badge ${statusInfo.class}">${statusInfo.text}</span></td>
+                    <td><button class="action-btn" onclick="showReservationDetail(${res.id})">详情</button></td>
+                </tr>
+            `;
+        }).join('');
+    }
+
+    // 根据选项卡筛选预约记录
+    function filterReservations(tab) {
+        currentTab = tab;
+        
+        let filtered = [];
+        const now = new Date();
+        
+        switch (tab) {
+            case 'all':
+                filtered = allReservations;
+                break;
+            case 'active':
+                filtered = allReservations.filter(res => {
+                    const status = res.status;
+                    return status === 'pending' || status === 'confirmed' || status === 'checked_in';
+                });
+                break;
+            case 'history':
+                filtered = allReservations.filter(res => {
+                    const status = res.status;
+                    return status === 'completed' || status === 'cancelled';
+                });
+                break;
+            default:
+                filtered = allReservations;
+        }
+        
+        renderReservations(filtered);
+    }
+
+    // 更新用户统计信息
+    function updateUserStats() {
+        const totalReservations = document.getElementById('totalReservations');
+        const totalHours = document.getElementById('totalHours');
+        const successRate = document.getElementById('successRate');
+        
+        if (!totalReservations || !totalHours || !successRate) return;
+
+        const total = allReservations.length;
+        
+        let hours = 0;
+        allReservations.forEach(res => {
+            const match = res.duration.match(/(\d+)小时/);
+            if (match) {
+                hours += parseInt(match[1]);
+            }
+        });
+        
+        const completedCount = allReservations.filter(r => r.status === 'completed').length;
+        const rate = total > 0 ? Math.round((completedCount / total) * 100) : 100;
+
+        if (totalReservations) totalReservations.textContent = total;
+        if (totalHours) totalHours.textContent = hours;
+        if (successRate) successRate.textContent = `${rate}%`;
+    }
+
+    // 显示预约详情
+    function showReservationDetail(id) {
+        const reservation = allReservations.find(r => r.id === id);
+        if (!reservation) return;
+
+        const statusInfo = getStatusInfo(reservation.status);
+        const detail = `
+            <div style="padding: 10px;">
+                <p><strong>座位号：</strong>${reservation.seatNumber || reservation.seatNo}</p>
+                <p><strong>区域：</strong>${reservation.area || '未知'}</p>
+                <p><strong>时间：</strong>${reservation.time}</p>
+                <p><strong>时长：</strong>${reservation.duration}</p>
+                <p><strong>状态：</strong>${statusInfo.text}</p>
+                ${reservation.note ? `<p><strong>备注：</strong>${reservation.note}</p>` : ''}
+            </div>
+        `;
+        
+        showToast('查看详情');
+    }
+
+    // 保存设置
+    function saveSettings() {
+        const notificationSetting = document.getElementById('notificationSetting').value;
+        const autoCheckin = document.getElementById('autoCheckin').value;
+        const privacySetting = document.getElementById('privacySetting').checked;
+
+        const settings = {
+            notificationSetting,
+            autoCheckin,
+            privacySetting
+        };
+
+        localStorage.setItem('userSettings', JSON.stringify(settings));
+        showToast('设置保存成功');
+    }
+
+    // 重置设置
+    function resetSettings() {
+        document.getElementById('notificationSetting').value = 'important';
+        document.getElementById('autoCheckin').value = 'disabled';
+        document.getElementById('privacySetting').checked = true;
+        localStorage.removeItem('userSettings');
+        showToast('已恢复默认设置');
+    }
+
+    // 页面加载时初始化
+    document.addEventListener('DOMContentLoaded', function() {
+        loadUserInfo();
+        fetchReservations();
+
+        // 绑定事件
+        document.getElementById('editProfileBtn').addEventListener('click', openEditProfileModal);
+        document.getElementById('changePasswordBtn').addEventListener('click', openChangePasswordModal);
+        document.getElementById('logoutBtn').addEventListener('click', logout);
+
+        document.getElementById('cancelEditBtn').addEventListener('click', closeEditProfileModal);
+        document.getElementById('saveProfileBtn').addEventListener('click', saveProfile);
+
+        document.getElementById('cancelPasswordBtn').addEventListener('click', closeChangePasswordModal);
+        document.getElementById('savePasswordBtn').addEventListener('click', savePassword);
+
+        document.getElementById('saveSettingsBtn').addEventListener('click', saveSettings);
+        document.getElementById('resetSettingsBtn').addEventListener('click', resetSettings);
+
+        document.getElementById('goToBooking').addEventListener('click', function() {
+            window.location.href = 'index.html';
+        });
+
+        // 点击模态框外部关闭
+        document.getElementById('editProfileModal').addEventListener('click', function(e) {
+            if (e.target === this) closeEditProfileModal();
+        });
+
+        document.getElementById('changePasswordModal').addEventListener('click', function(e) {
+            if (e.target === this) closeChangePasswordModal();
+        });
+
+        // 选项卡切换
+        const tabButtons = document.querySelectorAll('.tab-btn');
+        tabButtons.forEach(btn => {
+            btn.addEventListener('click', function() {
+                tabButtons.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                const tab = this.getAttribute('data-tab');
+                filterReservations(tab);
+            });
+        });
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>智习空间 · 智能自习室管理系统</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="./css/index.css">
+    <style>
+        /* 签到按钮样式 */
+        .checkin-button {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 10px 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .checkin-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+        }
+        
+        .checkin-button:active {
+            transform: translateY(0);
+        }
+        
+        .checkin-button:disabled {
+            background: #cbd5e1;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        /* 顶部导航栏用户信息区域调整 */
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .checkin-button {
+                padding: 8px 12px;
+                font-size: 0.8rem;
+            }
+            
+            .checkin-button span {
+                display: none; /* 在小屏幕上只显示图标 */
+            }
+            
+            .user-info {
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="dashboard">
+    <div class="top-bar">
+        <div class="logo-area">
+            <div class="logo-icon"><i class="fas fa-chalkboard-user"></i></div>
+            <div class="logo-text">智习空间 · 自习室管家</div>
+        </div>
+        <div class="user-info">
+            <!-- 添加签到按钮 -->
+            <button class="checkin-button" id="checkinBtn">
+                <i class="fas fa-qrcode"></i>
+                <span>签到</span>
+            </button>
+            
+            <div class="credit-badge"><i class="fas fa-star"></i> 信用分 <span id="creditScoreDisplay">85</span></div>
+            <div id="userDisplayName"><i class="fas fa-user-graduate"></i> 用户同学</div>
+            <a href="./个人中心.html"><div id="userAvatar" class="avatar">用</div></a>
+        </div>
+    </div>
+
+    <div class="main-grid">
+        <div class="seats-panel">
+            <div class="panel-header">
+                <h2><i class="fas fa-couch"></i> 座位地图 · 实时状态</h2>
+                <div class="legend">
+                    <span><i class="fas fa-circle" style="color:#15803d; font-size: 0.7rem;"></i> 空闲</span>
+                    <span><i class="fas fa-circle" style="color:#b91c1c; font-size: 0.7rem;"></i> 占用</span>
+                    <span><i class="fas fa-circle" style="color:#b45309; font-size: 0.7rem;"></i> 预约中</span>
+                </div>
+            </div>
+            <div class="area-filter" id="areaFilter">
+                <button class="area-btn active" data-area="all">全部区域</button>
+                <button class="area-btn" data-area="A区">A区</button>
+                <button class="area-btn" data-area="B区">B区</button>
+                <button class="area-btn" data-area="C区">C区</button>
+                <button class="area-btn" data-area="D区">D区</button>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalSeats">120</div>
+                    <div class="stat-label">总座位数</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="availableSeats">116</div>
+                    <div class="stat-label">可用座位</div>
+                </div>
+            </div>
+            <div class="seat-grid" id="seatGridContainer"></div>
+        </div>
+
+        <div>
+            <div class="info-card">
+                <h3><i class="fas fa-calendar-check"></i> 我的预约</h3>
+                <div id="myReservationsList">
+                    <div class="empty-message">暂无预约，点击空闲座位预约吧～</div>
+                </div>
+                <button id="refreshReservationsBtn" class="btn-outline" style="margin-top: 8px; width:100%"><i class="fas fa-sync-alt"></i> 刷新预约</button>
+            </div>
+            <div class="info-card">
+                <h3><i class="fas fa-chart-line"></i> 信用档案</h3>
+                <div style="display: flex; align-items: center; gap: 16px;">
+                    <div><span class="credit-score" id="creditScoreBig">85</span><span style="font-size:0.8rem;"> / 100</span></div>
+                    <div><i class="fas fa-history"></i> 违约次数: <strong id="violationCount">1</strong></div>
+                </div>
+                <div class="divider"></div>
+                <div style="font-size: 0.75rem; color:#475569;">
+                    <i class="fas fa-info-circle"></i> 信用规则：按时签到+2分，违约扣5分。预约后请准时签到。
+                </div>
+                <div style="margin-top: 12px;">
+                    <small>📋 最近记录: 2025-04-02 预约S205 已签到 ✔️</small>
+                </div>
+            </div>
+            <div class="info-card">
+                <h3><i class="fas fa-question-circle"></i> 预约指南</h3>
+                <ul style="margin-left: 18px; font-size: 0.75rem; color:#334155;">
+                    <li>✅ 点击空闲座位 → 选择时间段 → 确认预约</li>
+                    <li>⏳ "预约中"状态避免并发冲突</li>
+                    <li>📱 个人中心
+                        查看全部预约记录</li>
+                    <li>🔀 可使用区域筛选查看特定区域座位</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="reservationModal" class="modal-overlay">
+    <div class="modal-container">
+        <h4><i class="fas fa-pen-alt"></i> 填写预约信息</h4>
+        <div>座位: <strong id="modalSeatId">--</strong></div>
+        <label>开始时间</label>
+        <input type="datetime-local" id="startTimeInput" value="2025-04-05T10:00">
+        <label>结束时间</label>
+        <input type="datetime-local" id="endTimeInput" value="2025-04-05T12:00">
+        <div class="modal-buttons">
+            <button id="cancelModalBtn" class="btn-outline">取消</button>
+            <button id="confirmReserveBtn">确认预约</button>
+        </div>
+    </div>
+</div>
+
+<div id="globalToast" class="toast-message"></div>
+
+<script src="./js/index.js"></script>
+<script>
+    // 获取当前登录用户
+    function getCurrentUser() {
+        const userStr = localStorage.getItem('currentUser');
+        if (userStr) {
+            try {
+                return JSON.parse(userStr);
+            } catch (e) {
+                console.error('解析当前用户失败:', e);
+                return null;
+            }
+        }
+        return null;
+    }
+
+    // 加载用户信息显示
+    function loadUserInfo() {
+        const user = getCurrentUser();
+        if (!user) {
+            // 如果没有登录，跳转到登录页面
+            setTimeout(() => {
+                window.location.href = './登录.html';
+            }, 1000);
+            return;
+        }
+
+        // 更新用户显示信息
+        const userDisplayName = document.getElementById('userDisplayName');
+        const userAvatar = document.getElementById('userAvatar');
+        const creditScoreDisplay = document.getElementById('creditScoreDisplay');
+
+        if (userDisplayName) {
+            userDisplayName.innerHTML = `<i class="fas fa-user-graduate"></i> ${user.name || '用户'}同学`;
+        }
+        if (userAvatar) {
+            userAvatar.textContent = (user.name || '用').charAt(0);
+        }
+        if (creditScoreDisplay) {
+            creditScoreDisplay.textContent = user.credit_score || '85';
+        }
+    }
+
+    // 签到按钮功能
+    document.addEventListener('DOMContentLoaded', function() {
+        // 先加载用户信息
+        loadUserInfo();
+        
+        const checkinBtn = document.getElementById('checkinBtn');
+        
+        if (checkinBtn) {
+            // 检查是否有待签到的预约
+            function checkIfHasPendingCheckin() {
+                // 这里应该从API获取用户的预约状态
+                // 现在模拟检查是否有待签到的预约
+                const hasReservation = true; // 模拟用户有预约
+                const isCheckinTime = true; // 模拟现在是签到时间
+                
+                return hasReservation && isCheckinTime;
+            }
+            
+            // 初始化按钮状态
+            const hasPendingCheckin = checkIfHasPendingCheckin();
+            
+            if (hasPendingCheckin) {
+                // 有需要签到的预约
+                checkinBtn.innerHTML = '<i class="fas fa-qrcode"></i><span>立即签到</span>';
+                checkinBtn.disabled = false;
+            } else {
+                // 没有需要签到的预约
+                checkinBtn.innerHTML = '<i class="fas fa-clock"></i><span>暂无签到</span>';
+                checkinBtn.disabled = false;
+                checkinBtn.style.background = '#cbd5e1';
+            }
+            
+            // 点击签到按钮
+            checkinBtn.addEventListener('click', function() {
+                if (this.disabled) return;
+                
+                if (hasPendingCheckin) {
+                    // 跳转到签到页面
+                    window.location.href = './签到.html'; // 假设签到页面是checkin.html
+                } else {
+                    // 显示提示信息
+                    showToast('当前没有需要签到的预约', 'info');
+                }
+            });
+        }
+        
+        // Toast提示函数
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('globalToast');
+            if (!toast) return;
+            
+            toast.textContent = message;
+            toast.className = 'toast-message';
+            
+            // 根据类型添加不同样式
+            if (type === 'success') {
+                toast.style.backgroundColor = '#10b981';
+            } else if (type === 'error') {
+                toast.style.backgroundColor = '#ef4444';
+            } else if (type === 'info') {
+                toast.style.backgroundColor = '#3b82f6';
+            } else if (type === 'warning') {
+                toast.style.backgroundColor = '#f59e0b';
+            }
+            
+            toast.classList.add('show');
+            
+            // 3秒后隐藏
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+    });
+</script>
+</body>
+</html>

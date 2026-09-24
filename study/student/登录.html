@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>校园管理系统 - 登录</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", Arial, sans-serif;
+        }
+
+        body {
+            height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            width: 800px;
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+
+        /* 选项卡头部 */
+        .tabs-header {
+            display: flex;
+            background: #f8f9fa;
+            padding: 0 40px;
+        }
+
+        .tab-item {
+            flex: 1;
+            padding: 20px 0;
+            text-align: center;
+            font-size: 18px;
+            font-weight: 500;
+            cursor: pointer;
+            color: #999;
+            position: relative;
+            transition: color 0.3s;
+        }
+
+        .tab-item.active {
+            color: #1890ff;
+        }
+
+        .tab-item.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: #1890ff;
+            border-radius: 2px;
+        }
+
+        /* 表单区域 */
+        .form-section {
+            padding: 40px;
+        }
+
+        .login-box {
+            display: flex;
+        }
+
+        .left-panel {
+            flex: 1;
+            padding-right: 40px;
+            border-right: 1px solid #eee;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .logo-area {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo-area .icon {
+            font-size: 60px;
+            margin-bottom: 15px;
+        }
+
+        .logo-area h2 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .logo-area p {
+            color: #999;
+            font-size: 14px;
+        }
+
+        .features {
+            list-style: none;
+        }
+
+        .features li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .features li i {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #e6f7ff;
+            color: #1890ff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 12px;
+            font-size: 12px;
+        }
+
+        .right-panel {
+            flex: 1;
+            padding-left: 40px;
+        }
+
+        .form-header {
+            margin-bottom: 30px;
+        }
+
+        .form-header h3 {
+            font-size: 20px;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .form-header p {
+            color: #999;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .form-group input:focus {
+            border-color: #1890ff;
+            box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.1);
+        }
+
+        .form-group input::placeholder {
+            color: #ccc;
+        }
+
+        .remember {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 25px;
+        }
+
+        .remember-left {
+            display: flex;
+            align-items: center;
+            font-size: 13px;
+            color: #666;
+        }
+
+        .remember-left input {
+            margin-right: 6px;
+            width: 14px;
+            height: 14px;
+        }
+
+        .forgot {
+            font-size: 13px;
+            color: #1890ff;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .forgot:hover {
+            text-decoration: underline;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            color: #fff;
+            transition: opacity 0.3s, transform 0.1s;
+            margin-bottom: 15px;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #1890ff 0%, #096dd9 100%);
+        }
+
+        .btn-secondary {
+            background: #f5f5f5;
+            color: #666;
+        }
+
+        .btn-secondary:hover {
+            background: #e8e8e8;
+        }
+
+        .footer-links {
+            text-align: center;
+            font-size: 13px;
+            color: #999;
+        }
+
+        .footer-links span {
+            margin: 0 10px;
+            color: #ddd;
+        }
+
+        .footer-links a {
+            color: #1890ff;
+            text-decoration: none;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+
+        /* 学生登录特有样式 */
+        .student-tab .logo-area .icon {
+            color: #1890ff;
+        }
+
+        .student-tab .btn-primary {
+            background: linear-gradient(135deg, #1890ff 0%, #096dd9 100%);
+        }
+
+        /* 管理员登录特有样式 */
+        .admin-tab .logo-area .icon {
+            color: #722ed1;
+        }
+
+        .admin-tab .tab-item.active {
+            color: #722ed1;
+        }
+
+        .admin-tab .tab-item.active::after {
+            background: #722ed1;
+        }
+
+        .admin-tab .features li i {
+            background: #f9f0ff;
+            color: #722ed1;
+        }
+
+        .admin-tab .form-group input:focus {
+            border-color: #722ed1;
+            box-shadow: 0 0 0 2px rgba(114, 46, 209, 0.1);
+        }
+
+        .admin-tab .btn-primary {
+            background: linear-gradient(135deg, #722ed1 0%, #531dab 100%);
+        }
+
+        .admin-tab .forgot {
+            color: #722ed1;
+        }
+
+        .admin-tab .footer-links a {
+            color: #722ed1;
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .container {
+                width: 90%;
+                margin: 20px;
+            }
+
+            .tabs-header {
+                padding: 0 20px;
+            }
+
+            .form-section {
+                padding: 20px;
+            }
+
+            .login-box {
+                flex-direction: column;
+            }
+
+            .left-panel {
+                padding-right: 0;
+                border-right: none;
+                border-bottom: 1px solid #eee;
+                padding-bottom: 20px;
+                margin-bottom: 20px;
+            }
+
+            .right-panel {
+                padding-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- 选项卡头部 -->
+    <div class="tabs-header">
+        <div class="tab-item active" id="studentTab" onclick="switchTab('student')">
+            学生登录
+        </div>
+        <div class="tab-item" id="adminTab" onclick="switchTab('admin')">
+            管理员登录
+        </div>
+    </div>
+
+    <!-- 表单区域 -->
+    <div class="form-section">
+        <!-- 学生登录表单 -->
+        <div class="login-box student-tab" id="studentForm">
+            <div class="left-panel">
+                <div class="logo-area">
+                    <div class="icon">👨‍🎓</div>
+                    <h2>校园管理系统</h2>
+                    <p>学生端</p>
+                </div>
+                <ul class="features">
+                    <li><i>📚</i> 座位预约</li>
+                    <li><i>✅</i> 签到打卡</li>
+                    <li><i>📊</i> 学分查询</li>
+                    <li><i>🔔</i> 消息通知</li>
+                </ul>
+            </div>
+            <div class="right-panel">
+                <div class="form-header">
+                    <h3>欢迎回来</h3>
+                    <p>请输入您的学号和密码</p>
+                </div>
+                <div class="form-group">
+                    <label>学号</label>
+                    <input type="text" id="studentUsername" placeholder="请输入学号">
+                </div>
+                <div class="form-group">
+                    <label>密码</label>
+                    <input type="password" id="studentPassword" placeholder="请输入密码">
+                </div>
+                <div class="remember">
+                    <div class="remember-left">
+                        <input type="checkbox" id="studentRemember">
+                        <label for="studentRemember">记住我</label>
+                    </div>
+                    <a href="#" class="forgot">忘记密码？</a>
+                </div>
+                <button class="btn btn-primary" onclick="studentLogin()">登 录</button>
+                <button class="btn btn-secondary" onclick="openRegisterModal()">注 册</button>
+                <div class="footer-links">
+                    <a href="#">服务条款</a>
+                    <span>|</span>
+                    <a href="#">隐私政策</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 管理员登录表单 -->
+        <div class="login-box admin-tab" id="adminForm" style="display: none;">
+            <div class="left-panel">
+                <div class="logo-area">
+                    <div class="icon">🔐</div>
+                    <h2>校园管理系统</h2>
+                    <p>管理后台</p>
+                </div>
+                <ul class="features">
+                    <li><i>👥</i> 用户管理</li>
+                    <li><i>📈</i> 数据统计</li>
+                    <li><i>📝</i> 公告管理</li>
+                    <li><i>⚡</i> 违规处理</li>
+                </ul>
+            </div>
+            <div class="right-panel">
+                <div class="form-header">
+                    <h3>管理员登录</h3>
+                    <p>请输入您的管理员账号和密码</p>
+                </div>
+                <div class="form-group">
+                    <label>管理员账号</label>
+                    <input type="text" id="adminUsername" placeholder="请输入管理员账号">
+                </div>
+                <div class="form-group">
+                    <label>密码</label>
+                    <input type="password" id="adminPassword" placeholder="请输入密码">
+                </div>
+                <div class="remember">
+                    <div class="remember-left">
+                        <input type="checkbox" id="adminRemember">
+                        <label for="adminRemember">记住我</label>
+                    </div>
+                    <a href="#" class="forgot">忘记密码？</a>
+                </div>
+                <button class="btn btn-primary" onclick="adminLogin()">登 录</button>
+                <div class="footer-links">
+                    <a href="#">服务条款</a>
+                    <span>|</span>
+                    <a href="#">隐私政策</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 注册模态框 -->
+<div class="modal-overlay" id="registerModal">
+    <div class="modal">
+        <div class="modal-header">
+            <h3>学生注册</h3>
+            <span class="modal-close" onclick="closeRegisterModal()">×</span>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label>学号</label>
+                <input type="text" id="regStudentId" placeholder="请输入学号">
+            </div>
+            <div class="form-group">
+                <label>姓名</label>
+                <input type="text" id="regName" placeholder="请输入姓名">
+            </div>
+            <div class="form-group">
+                <label>密码</label>
+                <input type="password" id="regPassword" placeholder="请输入密码">
+            </div>
+            <div class="form-group">
+                <label>确认密码</label>
+                <input type="password" id="regConfirmPassword" placeholder="请再次输入密码">
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="closeRegisterModal()">取消</button>
+            <button class="btn btn-primary" onclick="registerStudent()">注册</button>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* 模态框样式 */
+    .modal-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    .modal-overlay.active {
+        display: flex;
+    }
+
+    .modal {
+        background: #fff;
+        border-radius: 12px;
+        width: 400px;
+        max-width: 90%;
+        overflow: hidden;
+    }
+
+    .modal-header {
+        padding: 20px;
+        background: #1890ff;
+        color: #fff;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .modal-header h3 {
+        margin: 0;
+        font-size: 18px;
+    }
+
+    .modal-close {
+        cursor: pointer;
+        font-size: 24px;
+        line-height: 1;
+    }
+
+    .modal-body {
+        padding: 20px;
+    }
+
+    .modal-footer {
+        padding: 15px 20px;
+        border-top: 1px solid #eee;
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+    }
+
+    .modal-footer .btn {
+        width: auto;
+        padding: 8px 20px;
+        font-size: 14px;
+        margin-bottom: 0;
+    }
+</style>
+
+<script>
+    // 用户数据库 - 从db.json加载
+    let users = [];
+    const DB_JSON_PATH = './db.json';
+
+    // 切换选项卡
+    function switchTab(tab) {
+        const studentTab = document.getElementById('studentTab');
+        const adminTab = document.getElementById('adminTab');
+        const studentForm = document.getElementById('studentForm');
+        const adminForm = document.getElementById('adminForm');
+
+        if (tab === 'student') {
+            studentTab.classList.add('active');
+            adminTab.classList.remove('active');
+            studentForm.style.display = 'flex';
+            adminForm.style.display = 'none';
+        } else {
+            adminTab.classList.add('active');
+            studentTab.classList.remove('active');
+            adminForm.style.display = 'flex';
+            studentForm.style.display = 'none';
+        }
+    }
+
+    // 从db.json加载用户数据
+    async function loadUsersFromDB() {
+        try {
+            const response = await fetch(DB_JSON_PATH);
+            const data = await response.json();
+            if (data && data.users) {
+                users = data.users;
+            }
+        } catch (error) {
+            console.error('加载db.json失败:', error);
+            // 如果加载失败，使用默认数据
+            users = [
+                { id: 1, username: "admin", password: "admin", role: "admin", name: "系统管理员" },
+                { id: 2, username: "20210001", password: "123456", role: "student", name: "张三", credit_score: 85 },
+                { id: 3, username: "20210002", password: "654321", role: "student", name: "李四", credit_score: 90 }
+            ];
+        }
+        // 合并localStorage中的已注册用户
+        mergeRegisteredUsers();
+    }
+
+    // 合并localStorage中的注册用户
+    function mergeRegisteredUsers() {
+        const storedUsers = localStorage.getItem('registeredUsers');
+        if (storedUsers) {
+            try {
+                const registeredUsers = JSON.parse(storedUsers);
+                const existingUsernames = new Set(users.map(u => u.username));
+                registeredUsers.forEach(user => {
+                    if (!existingUsernames.has(user.username)) {
+                        users.push(user);
+                    }
+                });
+            } catch (e) {
+                console.error('解析注册用户数据失败:', e);
+            }
+        }
+    }
+
+    // 获取所有用户数据（包含db.json和已注册用户）
+    function getUsers() {
+        return users;
+    }
+
+    // 保存注册用户到JSON文件（通过API）
+    async function saveRegisteredUser(user) {
+        try {
+            const response = await fetch('/api/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(user)
+            });
+            
+            const result = await response.json();
+            
+            if (result.success) {
+                // 更新内存中的用户列表
+                const memIndex = users.findIndex(u => u.username === user.username);
+                if (memIndex !== -1) {
+                    users[memIndex] = user;
+                } else {
+                    users.push(user);
+                }
+                // 同时保存到localStorage作为缓存
+                const storedUsers = localStorage.getItem('registeredUsers');
+                const registeredUsers = storedUsers ? JSON.parse(storedUsers) : [];
+                const existingIndex = registeredUsers.findIndex(u => u.username === user.username);
+                if (existingIndex !== -1) {
+                    registeredUsers[existingIndex] = user;
+                } else {
+                    registeredUsers.push(user);
+                }
+                localStorage.setItem('registeredUsers', JSON.stringify(registeredUsers));
+                return true;
+            } else {
+                console.error('保存失败:', result.error);
+                return false;
+            }
+        } catch (error) {
+            console.error('保存用户失败:', error);
+            // 如果API失败，回退到localStorage
+            const storedUsers = localStorage.getItem('registeredUsers');
+            const registeredUsers = storedUsers ? JSON.parse(storedUsers) : [];
+            const existingIndex = registeredUsers.findIndex(u => u.username === user.username);
+            if (existingIndex !== -1) {
+                registeredUsers[existingIndex] = user;
+            } else {
+                registeredUsers.push(user);
+            }
+            localStorage.setItem('registeredUsers', JSON.stringify(registeredUsers));
+            const memIndex = users.findIndex(u => u.username === user.username);
+            if (memIndex !== -1) {
+                users[memIndex] = user;
+            } else {
+                users.push(user);
+            }
+            return false;
+        }
+    }
+
+    // 更新用户密码（用于个人中心调用）
+    async function updateLoginPageUsers(username, newPassword) {
+        const index = users.findIndex(u => u.username === username);
+        if (index !== -1) {
+            users[index].password = newPassword;
+            
+            // 通过API更新到JSON文件
+            try {
+                const response = await fetch('/api/update-password', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, newPassword })
+                });
+                const result = await response.json();
+                if (!result.success) {
+                    console.error('密码更新失败:', result.error);
+                }
+            } catch (error) {
+                console.error('密码更新失败:', error);
+            }
+            
+            // 同时更新localStorage
+            await saveRegisteredUser(users[index]);
+        }
+    }
+
+    // 学生登录
+    function studentLogin() {
+        const username = document.getElementById("studentUsername").value.trim();
+        const password = document.getElementById("studentPassword").value.trim();
+
+        if (!username || !password) {
+            alert("请输入学号和密码");
+            return;
+        }
+
+        const userList = getUsers();
+        const user = userList.find(u => u.username === username && u.password === password && u.role === 'student');
+
+        if (user) {
+            localStorage.setItem('currentUser', JSON.stringify(user));
+            alert(`登录成功！欢迎, ${user.name}`);
+            window.location.href = "/student/index.html";
+        } else {
+            alert("学号或密码错误");
+        }
+    }
+
+    // 管理员登录
+    function adminLogin() {
+        const username = document.getElementById("adminUsername").value.trim();
+        const password = document.getElementById("adminPassword").value.trim();
+
+        if (!username || !password) {
+            alert("请输入管理员账号和密码");
+            return;
+        }
+
+        const userList = getUsers();
+        const user = userList.find(u => u.username === username && u.password === password && u.role === 'admin');
+
+        if (user) {
+            localStorage.setItem('currentUser', JSON.stringify(user));
+            alert("管理员登录成功！即将跳转到管理后台");
+            window.location.href = "/admin/";
+        } else {
+            alert("管理员账号或密码错误");
+        }
+    }
+
+    // 打开注册模态框
+    function openRegisterModal() {
+        document.getElementById('registerModal').classList.add('active');
+    }
+
+    // 关闭注册模态框
+    function closeRegisterModal() {
+        document.getElementById('registerModal').classList.remove('active');
+        document.getElementById('regStudentId').value = '';
+        document.getElementById('regName').value = '';
+        document.getElementById('regPassword').value = '';
+        document.getElementById('regConfirmPassword').value = '';
+    }
+
+    // 学生注册
+    async function registerStudent() {
+        const studentId = document.getElementById('regStudentId').value.trim();
+        const name = document.getElementById('regName').value.trim();
+        const password = document.getElementById('regPassword').value.trim();
+        const confirmPassword = document.getElementById('regConfirmPassword').value.trim();
+
+        if (!studentId || !name || !password || !confirmPassword) {
+            alert('请填写所有字段');
+            return;
+        }
+
+        if (password !== confirmPassword) {
+            alert('两次输入的密码不一致');
+            return;
+        }
+
+        if (password.length < 6) {
+            alert('密码长度至少为6位');
+            return;
+        }
+
+        const userList = getUsers();
+        const exists = userList.find(u => u.username === studentId);
+        
+        if (exists) {
+            alert('该学号已被注册');
+            return;
+        }
+
+        const newUser = {
+            id: userList.length + 1,
+            username: studentId,
+            password: password,
+            role: 'student',
+            name: name,
+            credit_score: 100,
+            last_update_time: new Date().toLocaleString('zh-CN')
+        };
+
+        // 保存到JSON文件（通过API）
+        const success = await saveRegisteredUser(newUser);
+
+        if (success) {
+            alert('注册成功！请登录');
+        } else {
+            alert('注册成功！（数据已保存到本地缓存）');
+        }
+        closeRegisterModal();
+    }
+
+    // 点击模态框外部关闭
+    document.getElementById('registerModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeRegisterModal();
+        }
+    });
+
+    // 页面加载时初始化
+    document.addEventListener('DOMContentLoaded', function() {
+        loadUsersFromDB();
+    });
+</script>
+</body>
+</html>

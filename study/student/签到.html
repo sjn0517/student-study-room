@@ -1,0 +1,1413 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>智能签到 · 智习空间</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #0f172a;
+            min-height: 100vh;
+            padding: 1.5rem;
+        }
+
+        /* 整体容器 */
+        .checkin-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* 顶部导航栏 */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 1rem 2rem;
+            border-radius: 2rem;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .logo-icon {
+            background: #3b82f6;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            color: white;
+            font-size: 1.3rem;
+        }
+        
+        .logo-text {
+            font-weight: 700;
+            font-size: 1.4rem;
+            letter-spacing: -0.3px;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .nav-btn {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #3b82f6, #6366f1);
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+        
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .credit-badge {
+            background: linear-gradient(135deg, #fef9c3, #fde68a);
+            padding: 8px 16px;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #854d0e;
+            box-shadow: 0 2px 8px rgba(234, 179, 8, 0.2);
+        }
+        
+        .avatar {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        /* 主要内容区域 */
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 24px;
+        }
+
+        /* 左侧签到区域 */
+        .checkin-main {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 28px;
+            padding: 2rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .checkin-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+        
+        .checkin-header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        
+        .checkin-header p {
+            color: #64748b;
+            font-size: 1.1rem;
+        }
+        
+        /* 签到方式选择 */
+        .checkin-methods {
+            margin-bottom: 2.5rem;
+        }
+        
+        .methods-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 2rem;
+            background: #f1f5f9;
+            padding: 8px;
+            border-radius: 16px;
+        }
+        
+        .method-tab {
+            flex: 1;
+            padding: 20px 16px;
+            border: none;
+            background: transparent;
+            border-radius: 12px;
+            font-weight: 600;
+            color: #64748b;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .method-tab.active {
+            background: white;
+            color: #3b82f6;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        
+        .method-tab i {
+            font-size: 1.8rem;
+        }
+        
+        .method-tab:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.5);
+        }
+        
+        /* 签到内容区域 */
+        .checkin-content {
+            background: #f8fafc;
+            border-radius: 20px;
+            padding: 2rem;
+            min-height: 400px;
+        }
+        
+        /* 位置验证签到 */
+        .location-checkin {
+            text-align: center;
+        }
+        
+        .location-icon {
+            width: 140px;
+            height: 140px;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            color: white;
+            font-size: 3.5rem;
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
+        }
+        
+        .location-status {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 2rem 0;
+            padding: 16px 24px;
+            background: white;
+            border-radius: 16px;
+            border: 2px solid #e2e8f0;
+        }
+        
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ef4444;
+        }
+        
+        .status-indicator.active {
+            background: #10b981;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .distance-info {
+            font-size: 0.9rem;
+            color: #64748b;
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: 12px;
+        }
+        
+        /* 签到码验证 */
+        .code-checkin {
+            text-align: center;
+        }
+        
+        .code-display {
+            background: linear-gradient(135deg, #1e293b, #334155);
+            color: white;
+            padding: 2rem;
+            border-radius: 20px;
+            margin: 2rem 0;
+            font-family: 'Courier New', monospace;
+            font-size: 2.2rem;
+            letter-spacing: 12px;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+        
+        .timer {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #3b82f6;
+            margin: 1rem 0;
+        }
+        
+        .code-input-container {
+            margin: 2rem 0;
+        }
+        
+        .code-input {
+            width: 100%;
+            padding: 20px;
+            font-size: 1.8rem;
+            text-align: center;
+            letter-spacing: 12px;
+            border: 3px solid #e2e8f0;
+            border-radius: 16px;
+            font-family: 'Courier New', monospace;
+            transition: all 0.3s ease;
+        }
+        
+        .code-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+        }
+        
+        /* 按钮样式 */
+        .checkin-btn {
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 1.5rem;
+        }
+        
+        .checkin-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
+        }
+        
+        .checkin-btn:disabled {
+            background: #cbd5e1;
+            cursor: not-allowed;
+        }
+        
+        .checkin-btn.success {
+            background: linear-gradient(135deg, #10b981, #34d399);
+        }
+        
+        .checkin-btn.error {
+            background: linear-gradient(135deg, #ef4444, #f87171);
+        }
+        
+        /* 右侧信息面板 */
+        .info-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+        
+        .info-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 24px;
+            padding: 1.8rem;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .info-card h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #334155;
+        }
+        
+        .current-reservation {
+            background: linear-gradient(135deg, #dbeafe, #e0f2fe);
+            padding: 1.5rem;
+            border-radius: 16px;
+            margin-bottom: 1.5rem;
+        }
+        
+        .res-seat {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1e40af;
+            margin-bottom: 8px;
+        }
+        
+        .res-time {
+            color: #475569;
+            font-size: 1.1rem;
+            margin-bottom: 4px;
+        }
+        
+        .res-status {
+            display: inline-block;
+            padding: 8px 20px;
+            background: #d1fae5;
+            color: #065f46;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-top: 12px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .stat-item {
+            background: #f8fafc;
+            padding: 1.2rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #3b82f6;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: #64748b;
+            margin-top: 6px;
+        }
+        
+        .rules-list {
+            list-style: none;
+        }
+        
+        .rules-list li {
+            padding: 12px 0;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #475569;
+        }
+        
+        .rules-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .rules-list i {
+            color: #3b82f6;
+        }
+        
+        /* 签到历史 */
+        .history-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .history-item:last-child {
+            border-bottom: none;
+        }
+        
+        .history-time {
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+        
+        .history-seat {
+            font-weight: 600;
+            color: #334155;
+        }
+        
+        .history-status {
+            padding: 6px 16px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        
+        .history-status.success {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        
+        .history-status.late {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        
+        /* 模态框 */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 28px;
+            padding: 2.5rem;
+            max-width: 450px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+        }
+        
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+        
+        .modal-icon {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 3rem;
+        }
+        
+        .modal-icon.success {
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            color: #065f46;
+        }
+        
+        .modal-icon.error {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            color: #991b1b;
+        }
+        
+        .modal-icon.info {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            color: #1e40af;
+        }
+        
+        .modal-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #1e293b;
+        }
+        
+        .modal-message {
+            color: #64748b;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+        
+        .modal-buttons {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .modal-btn {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .modal-btn.primary {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            color: white;
+        }
+        
+        .modal-btn.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+        }
+        
+        .modal-btn.secondary {
+            background: #f1f5f9;
+            color: #475569;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 1024px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .top-bar {
+                padding: 1rem;
+            }
+            
+            .checkin-main {
+                padding: 1.5rem;
+            }
+            
+            .methods-tabs {
+                flex-direction: column;
+            }
+            
+            .code-display {
+                font-size: 1.8rem;
+                letter-spacing: 8px;
+                padding: 1.5rem;
+            }
+            
+            .timer {
+                font-size: 2.2rem;
+            }
+        }
+        
+        .fa, .fas, .far {
+            pointer-events: none;
+        }
+        
+        /* 加载动画 */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* 签到提示 */
+        .checkin-tip {
+            text-align: center;
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border-radius: 16px;
+        }
+        
+        .checkin-tip h4 {
+            color: #92400e;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 0.5rem;
+        }
+        
+        .checkin-tip p {
+            color: #92400e;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="checkin-container">
+    <!-- 顶部导航栏 -->
+    <div class="top-bar">
+        <div class="logo-area">
+            <div class="logo-icon"><i class="fas fa-fingerprint"></i></div>
+            <div class="logo-text">智习空间 · 智能签到</div>
+        </div>
+        
+        <div class="nav-buttons">
+            <a href="./index.html" class="nav-btn">
+                <i class="fas fa-home"></i> 首页
+            </a>
+        </div>
+        
+        <div class="user-info">
+            <div class="credit-badge"><i class="fas fa-star"></i> 信用分: 85</div>
+            <div class="avatar">张</div>
+        </div>
+    </div>
+
+    <!-- 主内容区域 -->
+    <div class="main-content">
+        <!-- 左侧签到区域 -->
+        <div class="checkin-main">
+            <div class="checkin-header">
+                <h1>自习室智能签到</h1>
+                <p>请选择签到方式完成座位验证</p>
+            </div>
+
+            <!-- 签到方式选择 -->
+            <div class="checkin-methods">
+                <div class="methods-tabs">
+                    <button class="method-tab active" data-method="location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>位置验证</span>
+                        <small>自动检测位置</small>
+                    </button>
+                    <button class="method-tab" data-method="code">
+                        <i class="fas fa-qrcode"></i>
+                        <span>签到码验证</span>
+                        <small>输入动态码</small>
+                    </button>
+                </div>
+
+                <!-- 签到内容区域 -->
+                <div class="checkin-content">
+                    <!-- 位置验证签到 -->
+                    <div id="location-checkin" class="location-checkin">
+                        <div class="location-icon">
+                            <i class="fas fa-satellite-dish"></i>
+                        </div>
+                        <h3>位置验证签到</h3>
+                        <p>系统将自动检测您是否在自习室范围内</p>
+                        
+                        <div class="location-status">
+                            <div class="status-indicator" id="locationStatus"></div>
+                            <span id="locationMessage">正在检测您的位置...</span>
+                        </div>
+                        
+                        <div class="distance-info">
+                            <p><i class="fas fa-ruler"></i> 距离要求: 自习室50米范围内</p>
+                            <p id="currentDistance"><i class="fas fa-location-dot"></i> 正在获取当前位置...</p>
+                        </div>
+                        
+                        <button class="checkin-btn" id="locationCheckinBtn" disabled>
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>等待位置验证...</span>
+                        </button>
+                    </div>
+
+                    <!-- 签到码验证 -->
+                    <div id="code-checkin" class="code-checkin" style="display: none;">
+                        <h3>动态签到码验证</h3>
+                        <p>请输入屏幕上显示的6位动态签到码</p>
+                        
+                        <div class="code-display" id="dynamicCode">8 4 2 7 6 1</div>
+                        
+                        <div class="timer" id="codeTimer">60</div>
+                        <p>动态码剩余时间（秒）</p>
+                        
+                        <div class="code-input-container">
+                            <input type="text" 
+                                   class="code-input" 
+                                   id="codeInput" 
+                                   maxlength="6" 
+                                   placeholder="输入6位签到码"
+                                   oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0,6)">
+                        </div>
+                        
+                        <button class="checkin-btn" id="codeCheckinBtn" disabled>
+                            <i class="fas fa-check-circle"></i>
+                            <span>请先输入签到码</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 签到提示 -->
+            <div class="checkin-tip">
+                <h4><i class="fas fa-info-circle"></i> 签到须知</h4>
+                <p>请在预约开始时间前后15分钟内完成签到，迟到将影响信用分</p>
+            </div>
+        </div>
+
+        <!-- 右侧信息面板 -->
+        <div class="info-sidebar">
+            <!-- 当前预约信息 -->
+            <div class="info-card">
+                <h3><i class="fas fa-calendar-check"></i> 当前预约</h3>
+                <div class="current-reservation">
+                    <div class="res-seat" id="currentSeat">S205</div>
+                    <div class="res-time" id="currentTime">今天 14:00 - 18:00</div>
+                    <div class="res-time" id="resDuration">时长: 4小时</div>
+                    <div class="res-status" id="resStatus">待签到</div>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-value" id="checkinCount">24</div>
+                        <div class="stat-label">累计签到</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="successRate">96%</div>
+                        <div class="stat-label">成功率</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="lateCount">2</div>
+                        <div class="stat-label">迟到次数</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="streakDays">5</div>
+                        <div class="stat-label">连续签到</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 签到规则 -->
+            <div class="info-card">
+                <h3><i class="fas fa-clipboard-list"></i> 签到规则</h3>
+                <ul class="rules-list">
+                    <li><i class="fas fa-check-circle"></i> 预约开始前后15分钟内签到有效</li>
+                    <li><i class="fas fa-check-circle"></i> 迟到15分钟内信用分-2分</li>
+                    <li><i class="fas fa-check-circle"></i> 迟到超过15分钟视为违约，信用分-5分</li>
+                    <li><i class="fas fa-check-circle"></i> 提前签到可额外获得+1信用分奖励</li>
+                    <li><i class="fas fa-check-circle"></i> 每周累计签到5次可获得勋章奖励</li>
+                </ul>
+            </div>
+
+            <!-- 最近签到记录 -->
+            <div class="info-card">
+                <h3><i class="fas fa-history"></i> 最近签到记录</h3>
+                <div class="history-list" id="checkinHistory">
+                    <!-- 签到记录将通过JavaScript动态加载 -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 签到成功模态框 -->
+<div id="successModal" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-icon success">
+            <i class="fas fa-check"></i>
+        </div>
+        <h2 class="modal-title" id="successTitle">签到成功！</h2>
+        <div class="modal-message" id="successMessage">
+            您已成功签到座位 <span class="res-seat">S205</span><br>
+            签到时间: <span id="checkinTime">14:02</span><br>
+            <span style="color: #10b981; font-weight: 600;">信用分 +2</span>
+        </div>
+        <div class="modal-buttons">
+            <button class="modal-btn secondary" id="viewDetailsBtn">查看详情</button>
+            <button class="modal-btn primary" id="closeModalBtn">返回首页</button>
+        </div>
+    </div>
+</div>
+
+<!-- 签到失败模态框 -->
+<div id="errorModal" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-icon error">
+            <i class="fas fa-times"></i>
+        </div>
+        <h2 class="modal-title" id="errorTitle">签到失败</h2>
+        <div class="modal-message" id="errorMessage">
+            签到失败，请检查网络连接后重试
+        </div>
+        <div class="modal-buttons">
+            <button class="modal-btn secondary" id="retryBtn">重试</button>
+            <button class="modal-btn primary" id="tryOtherMethodBtn">其他方式</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 模拟数据
+    const mockData = {
+        currentReservation: {
+            seat: "S205",
+            date: "2025-04-05",
+            startTime: "14:00",
+            endTime: "18:00",
+            duration: 4,
+            status: "pending"
+        },
+        userStats: {
+            checkinCount: 24,
+            successRate: 96,
+            lateCount: 2,
+            streakDays: 5,
+            creditScore: 85
+        },
+        checkinHistory: [
+            { id: 1, date: "2025-04-04", time: "08:05", seat: "S104", status: "success", isLate: false },
+            { id: 2, date: "2025-04-03", time: "13:58", seat: "S203", status: "success", isLate: false },
+            { id: 3, date: "2025-04-02", time: "10:12", seat: "S101", status: "late", isLate: true },
+            { id: 4, date: "2025-04-01", time: "15:01", seat: "S205", status: "success", isLate: false },
+            { id: 5, date: "2025-03-31", time: "19:05", seat: "S102", status: "success", isLate: false }
+        ]
+    };
+
+    // 全局状态
+    let currentMethod = 'location';
+    let checkinStatus = 'pending'; // pending, checking, success, error
+    let dynamicCode = generateDynamicCode();
+    let codeTimer = 60;
+    let locationAccessGranted = false;
+    let timerInterval = null;
+
+    // 页面初始化
+    function initPage() {
+        // 加载用户数据
+        loadUserData();
+        
+        // 加载签到历史
+        loadCheckinHistory();
+        
+        // 初始化位置验证
+        initLocationCheckin();
+        
+        // 初始化签到码验证
+        initCodeCheckin();
+        
+        // 绑定事件
+        bindEvents();
+    }
+
+    // 加载用户数据
+    function loadUserData() {
+        const reservation = mockData.currentReservation;
+        const stats = mockData.userStats;
+        
+        // 更新当前预约信息
+        document.getElementById('currentSeat').textContent = reservation.seat;
+        document.getElementById('currentTime').textContent = 
+            `今天 ${reservation.startTime} - ${reservation.endTime}`;
+        document.getElementById('resDuration').textContent = `时长: ${reservation.duration}小时`;
+        
+        // 更新用户统计
+        document.getElementById('checkinCount').textContent = stats.checkinCount;
+        document.getElementById('successRate').textContent = `${stats.successRate}%`;
+        document.getElementById('lateCount').textContent = stats.lateCount;
+        document.getElementById('streakDays').textContent = stats.streakDays;
+        
+        // 更新顶部信用分显示
+        document.querySelector('.credit-badge').innerHTML = 
+            `<i class="fas fa-star"></i> 信用分: ${stats.creditScore}`;
+    }
+
+    // 加载签到历史
+    function loadCheckinHistory() {
+        const historyList = document.getElementById('checkinHistory');
+        historyList.innerHTML = '';
+        
+        mockData.checkinHistory.forEach(record => {
+            const historyItem = document.createElement('div');
+            historyItem.className = 'history-item';
+            
+            let statusClass = 'success';
+            let statusText = '成功';
+            
+            if (record.status === 'late') {
+                statusClass = 'late';
+                statusText = '迟到';
+            }
+            
+            historyItem.innerHTML = `
+                <div>
+                    <div class="history-time">${record.date} ${record.time}</div>
+                    <div class="history-seat">${record.seat}</div>
+                </div>
+                <div class="history-status ${statusClass}">${statusText}</div>
+            `;
+            
+            historyList.appendChild(historyItem);
+        });
+    }
+
+    // 初始化位置验证
+    function initLocationCheckin() {
+        const statusIndicator = document.getElementById('locationStatus');
+        const statusMessage = document.getElementById('locationMessage');
+        const checkinBtn = document.getElementById('locationCheckinBtn');
+        const distanceInfo = document.getElementById('currentDistance');
+        
+        // 模拟位置检测
+        setTimeout(() => {
+            // 模拟位置获取成功
+            const isInRange = Math.random() > 0.2; // 80%概率在范围内
+            
+            if (isInRange) {
+                statusIndicator.classList.add('active');
+                statusMessage.textContent = '检测到您在自习室范围内';
+                distanceInfo.innerHTML = '<i class="fas fa-location-dot"></i> 当前位置: 自习室25米内';
+                checkinBtn.disabled = false;
+                checkinBtn.innerHTML = '<i class="fas fa-map-marker-alt"></i><span>立即签到</span>';
+                locationAccessGranted = true;
+            } else {
+                statusMessage.textContent = '您不在自习室范围内';
+                distanceInfo.innerHTML = '<i class="fas fa-location-dot"></i> 当前位置: 距离自习室120米';
+                checkinBtn.disabled = true;
+                checkinBtn.innerHTML = '<i class="fas fa-exclamation-circle"></i><span>不在签到范围内</span>';
+            }
+        }, 2000);
+    }
+
+    // 初始化签到码验证
+    function initCodeCheckin() {
+        // 显示动态码
+        document.getElementById('dynamicCode').textContent = 
+            dynamicCode.split('').join(' ');
+        
+        // 启动倒计时
+        startCodeTimer();
+        
+        // 监听输入框变化
+        const codeInput = document.getElementById('codeInput');
+        const checkinBtn = document.getElementById('codeCheckinBtn');
+        
+        codeInput.addEventListener('input', function() {
+            if (this.value.length === 6) {
+                checkinBtn.disabled = false;
+                checkinBtn.innerHTML = '<i class="fas fa-check-circle"></i><span>验证签到码</span>';
+            } else {
+                checkinBtn.disabled = true;
+                checkinBtn.innerHTML = '<i class="fas fa-check-circle"></i><span>请先输入签到码</span>';
+            }
+        });
+    }
+
+    // 生成动态签到码
+    function generateDynamicCode() {
+        return Array.from({length: 6}, () => Math.floor(Math.random() * 10)).join('');
+    }
+
+    // 启动倒计时
+    function startCodeTimer() {
+        const timerElement = document.getElementById('codeTimer');
+        const codeDisplay = document.getElementById('dynamicCode');
+        
+        // 清除已有的计时器
+        if (timerInterval) {
+            clearInterval(timerInterval);
+        }
+        
+        timerInterval = setInterval(() => {
+            codeTimer--;
+            timerElement.textContent = codeTimer;
+            
+            if (codeTimer <= 10) {
+                timerElement.style.color = '#ef4444';
+            }
+            
+            if (codeTimer <= 0) {
+                clearInterval(timerInterval);
+                // 生成新码
+                dynamicCode = generateDynamicCode();
+                codeDisplay.textContent = dynamicCode.split('').join(' ');
+                codeTimer = 60;
+                timerElement.textContent = codeTimer;
+                timerElement.style.color = '#3b82f6';
+                // 重新启动倒计时
+                startCodeTimer();
+            }
+        }, 1000);
+    }
+
+    // 绑定事件
+    function bindEvents() {
+        // 签到方式切换
+        document.querySelectorAll('.method-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                const method = this.dataset.method;
+                
+                // 更新活动标签
+                document.querySelectorAll('.method-tab').forEach(t => {
+                    t.classList.remove('active');
+                });
+                this.classList.add('active');
+                
+                // 显示对应内容
+                document.querySelectorAll('.checkin-content > div').forEach(content => {
+                    content.style.display = 'none';
+                });
+                document.getElementById(`${method}-checkin`).style.display = 'block';
+                
+                // 更新当前方法
+                currentMethod = method;
+            });
+        });
+        
+        // 位置验证签到按钮
+        document.getElementById('locationCheckinBtn').addEventListener('click', function() {
+            if (!this.disabled) {
+                performCheckin('location');
+            }
+        });
+        
+        // 签到码验证按钮
+        document.getElementById('codeCheckinBtn').addEventListener('click', function() {
+            if (!this.disabled) {
+                const inputCode = document.getElementById('codeInput').value;
+                if (inputCode === dynamicCode) {
+                    performCheckin('code');
+                } else {
+                    showErrorModal('签到码错误', '请输入正确的6位动态签到码');
+                }
+            }
+        });
+        
+        // 模态框按钮
+        document.getElementById('closeModalBtn').addEventListener('click', function() {
+            closeModal('successModal');
+        });
+        
+        document.getElementById('viewDetailsBtn').addEventListener('click', function() {
+            closeModal('successModal');
+            showToast('查看签到详情（功能演示）', 'info');
+        });
+        
+        document.getElementById('retryBtn').addEventListener('click', function() {
+            closeModal('errorModal');
+            // 根据当前方法重试
+            if (currentMethod === 'location') {
+                resetLocationCheckin();
+            } else if (currentMethod === 'code') {
+                document.getElementById('codeInput').value = '';
+                document.getElementById('codeCheckinBtn').disabled = true;
+            }
+        });
+        
+        document.getElementById('tryOtherMethodBtn').addEventListener('click', function() {
+            closeModal('errorModal');
+            // 切换到另一个方法
+            if (currentMethod === 'location') {
+                document.querySelector('.method-tab[data-method="code"]').click();
+            } else {
+                document.querySelector('.method-tab[data-method="location"]').click();
+            }
+        });
+    }
+
+    // 重置位置验证
+    function resetLocationCheckin() {
+        const statusIndicator = document.getElementById('locationStatus');
+        const statusMessage = document.getElementById('locationMessage');
+        const checkinBtn = document.getElementById('locationCheckinBtn');
+        const distanceInfo = document.getElementById('currentDistance');
+        
+        statusIndicator.classList.remove('active');
+        statusMessage.textContent = '正在重新检测您的位置...';
+        distanceInfo.innerHTML = '<i class="fas fa-location-dot"></i> 正在获取当前位置...';
+        checkinBtn.disabled = true;
+        checkinBtn.innerHTML = '<i class="fas fa-map-marker-alt"></i><span>等待位置验证...</span>';
+        locationAccessGranted = false;
+        
+        // 重新检测位置
+        setTimeout(() => {
+            const isInRange = Math.random() > 0.2;
+            
+            if (isInRange) {
+                statusIndicator.classList.add('active');
+                statusMessage.textContent = '检测到您在自习室范围内';
+                distanceInfo.innerHTML = '<i class="fas fa-location-dot"></i> 当前位置: 自习室25米内';
+                checkinBtn.disabled = false;
+                checkinBtn.innerHTML = '<i class="fas fa-map-marker-alt"></i><span>立即签到</span>';
+                locationAccessGranted = true;
+                showToast('位置验证通过', 'success');
+            } else {
+                statusMessage.textContent = '您不在自习室范围内';
+                distanceInfo.innerHTML = '<i class="fas fa-location-dot"></i> 当前位置: 距离自习室120米';
+                checkinBtn.disabled = true;
+                checkinBtn.innerHTML = '<i class="fas fa-exclamation-circle"></i><span>不在签到范围内</span>';
+            }
+        }, 1500);
+    }
+
+    // 执行签到
+    function performCheckin(method) {
+        if (checkinStatus === 'checking') return;
+        
+        checkinStatus = 'checking';
+        
+        // 根据方法更新按钮状态
+        let checkinBtn;
+        if (method === 'location') {
+            checkinBtn = document.getElementById('locationCheckinBtn');
+        } else {
+            checkinBtn = document.getElementById('codeCheckinBtn');
+        }
+        
+        checkinBtn.disabled = true;
+        checkinBtn.innerHTML = '<div class="loading"></div><span>签到中...</span>';
+        
+        // 模拟API请求延迟
+        setTimeout(() => {
+            // 随机模拟成功率
+            const isSuccess = Math.random() > 0.1; // 90%成功率
+            
+            if (isSuccess) {
+                // 签到成功
+                const now = new Date();
+                const checkinTime = now.toLocaleTimeString('zh-CN', { 
+                    hour: '2-digit', 
+                    minute: '2-digit' 
+                });
+                
+                // 计算是否迟到
+                const reservationTime = mockData.currentReservation.startTime;
+                const [resHour, resMinute] = reservationTime.split(':').map(Number);
+                const resDate = new Date();
+                resDate.setHours(resHour, resMinute, 0, 0);
+                
+                const diffMinutes = Math.floor((now - resDate) / (1000 * 60));
+                let creditChange = 2; // 正常签到+2分
+                let isLate = false;
+                
+                if (diffMinutes > 0 && diffMinutes <= 15) {
+                    creditChange = 0; // 迟到15分钟内不加分
+                    isLate = true;
+                } else if (diffMinutes > 15) {
+                    creditChange = -5; // 迟到超过15分钟扣5分
+                    isLate = true;
+                } else if (diffMinutes < -5) {
+                    creditChange = 3; // 提前5分钟以上+3分
+                }
+                
+                // 更新信用分
+                mockData.userStats.creditScore += creditChange;
+                
+                // 显示成功模态框
+                document.getElementById('successTitle').textContent = 
+                    isLate ? (diffMinutes > 15 ? '签到完成（迟到）' : '签到完成') : '签到成功！';
+                
+                document.getElementById('successMessage').innerHTML = `
+                    您已成功签到座位 <span class="res-seat">${mockData.currentReservation.seat}</span><br>
+                    签到时间: <span id="checkinTime">${checkinTime}</span><br>
+                    ${creditChange > 0 ? 
+                        `<span style="color: #10b981; font-weight: 600;">信用分 +${creditChange}</span>` :
+                        creditChange < 0 ?
+                        `<span style="color: #ef4444; font-weight: 600;">信用分 ${creditChange}</span>` :
+                        `<span style="color: #64748b; font-weight: 600;">信用分无变化</span>`
+                    }
+                `;
+                
+                showModal('successModal');
+                
+                // 更新页面数据
+                mockData.userStats.checkinCount++;
+                mockData.userStats.streakDays++;
+                if (isLate) mockData.userStats.lateCount++;
+                
+                loadUserData();
+                
+                // 添加签到记录
+                const newRecord = {
+                    id: mockData.checkinHistory.length + 1,
+                    date: now.toISOString().split('T')[0],
+                    time: checkinTime,
+                    seat: mockData.currentReservation.seat,
+                    status: isLate ? 'late' : 'success',
+                    isLate: isLate
+                };
+                mockData.checkinHistory.unshift(newRecord);
+                loadCheckinHistory();
+                
+            } else {
+                // 签到失败
+                showErrorModal('签到失败', '网络连接不稳定，请稍后重试');
+            }
+            
+            // 重置按钮状态
+            checkinStatus = 'pending';
+            if (method === 'location') {
+                checkinBtn.disabled = !locationAccessGranted;
+                checkinBtn.innerHTML = locationAccessGranted ? 
+                    '<i class="fas fa-map-marker-alt"></i><span>立即签到</span>' : 
+                    '<i class="fas fa-map-marker-alt"></i><span>等待位置验证...</span>';
+            } else {
+                checkinBtn.disabled = document.getElementById('codeInput').value.length !== 6;
+                checkinBtn.innerHTML = checkinBtn.disabled ? 
+                    '<i class="fas fa-check-circle"></i><span>请先输入签到码</span>' :
+                    '<i class="fas fa-check-circle"></i><span>验证签到码</span>';
+            }
+            
+        }, 2000);
+    }
+
+    // 显示模态框
+    function showModal(modalId) {
+        document.getElementById(modalId).classList.add('active');
+    }
+
+    // 关闭模态框
+    function closeModal(modalId) {
+        document.getElementById(modalId).classList.remove('active');
+    }
+
+    // 显示错误模态框
+    function showErrorModal(title, message) {
+        document.getElementById('errorTitle').textContent = title;
+        document.getElementById('errorMessage').textContent = message;
+        showModal('errorModal');
+    }
+
+    // 显示Toast提示
+    function showToast(message, type = 'info') {
+        // 创建或获取toast容器
+        let toastContainer = document.getElementById('toastContainer');
+        if (!toastContainer) {
+            toastContainer = document.createElement('div');
+            toastContainer.id = 'toastContainer';
+            toastContainer.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                z-index: 10000;
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            `;
+            document.body.appendChild(toastContainer);
+        }
+        
+        // 创建toast
+        const toast = document.createElement('div');
+        toast.style.cssText = `
+            background: ${type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#3b82f6'};
+            color: white;
+            padding: 12px 20px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            animation: slideIn 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        `;
+        
+        const icon = type === 'success' ? 'check-circle' : 
+                    type === 'error' ? 'exclamation-circle' : 'info-circle';
+        
+        toast.innerHTML = `
+            <i class="fas fa-${icon}"></i>
+            <span>${message}</span>
+        `;
+        
+        toastContainer.appendChild(toast);
+        
+        // 自动移除
+        setTimeout(() => {
+            toast.style.animation = 'slideOut 0.3s ease';
+            setTimeout(() => {
+                toast.remove();
+            }, 300);
+        }, 3000);
+        
+        // 添加动画样式
+        if (!document.getElementById('toastAnimations')) {
+            const style = document.createElement('style');
+            style.id = 'toastAnimations';
+            style.textContent = `
+                @keyframes slideIn {
+                    from { transform: translateX(100%); opacity: 0; }
+                    to { transform: translateX(0); opacity: 1; }
+                }
+                @keyframes slideOut {
+                    from { transform: translateX(0); opacity: 1; }
+                    to { transform: translateX(100%); opacity: 0; }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+    }
+
+    // 页面加载完成后初始化
+    document.addEventListener('DOMContentLoaded', function() {
+        initPage();
+        
+        // 模拟实时更新
+        setInterval(() => {
+            // 更新当前位置状态
+            if (currentMethod === 'location' && !locationAccessGranted) {
+                const isNowInRange = Math.random() > 0.3;
+                if (isNowInRange) {
+                    const statusIndicator = document.getElementById('locationStatus');
+                    const statusMessage = document.getElementById('locationMessage');
+                    const checkinBtn = document.getElementById('locationCheckinBtn');
+                    const distanceInfo = document.getElementById('currentDistance');
+                    
+                    if (!statusIndicator.classList.contains('active')) {
+                        statusIndicator.classList.add('active');
+                        statusMessage.textContent = '检测到您在自习室范围内';
+                        distanceInfo.innerHTML = '<i class="fas fa-location-dot"></i> 当前位置: 自习室25米内';
+                        checkinBtn.disabled = false;
+                        checkinBtn.innerHTML = '<i class="fas fa-map-marker-alt"></i><span>立即签到</span>';
+                        locationAccessGranted = true;
+                        showToast('已进入签到范围', 'success');
+                    }
+                }
+            }
+        }, 5000);
+    });
+</script>
+</body>
+</html>
