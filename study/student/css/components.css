@@ -1,0 +1,64 @@
+/* ==========================================================================
+   学生端公共组件样式（components.css）
+   对应 js/components 下的三个 Web Component：
+     <app-topbar>  顶部导航栏
+     <app-toast>   全局提示
+     <app-modal>   通用模态框
+   三个组件均以 light DOM 渲染，内部沿用各页面原有的 class / id，
+   因此页面自身的样式表（index.css / center.css / checkin.css）依旧可以直接生效，
+   这里只放"组件宿主元素"与"组件私有小部件"的样式。
+   ========================================================================== */
+
+/* ---------- 组件宿主元素：避免自身产生多余盒模型 ---------- */
+app-topbar {
+    display: block;
+}
+
+/* light DOM 透传，子元素按原样参与布局 */
+app-toast,
+app-modal {
+    display: contents;
+}
+
+/* ---------- 顶栏内的签到按钮（首页 variant="home" 使用） ---------- */
+.checkin-button {
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 10px 20px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+}
+
+.checkin-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+}
+
+.checkin-button:active {
+    transform: translateY(0);
+}
+
+.checkin-button:disabled {
+    background: #cbd5e1;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+@media (max-width: 768px) {
+    .checkin-button {
+        padding: 8px 12px;
+        font-size: 0.8rem;
+    }
+
+    .checkin-button span {
+        display: none; /* 小屏只保留图标 */
+    }
+}

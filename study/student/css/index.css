@@ -390,3 +390,16 @@
         .fa, .fas, .far {
             pointer-events: none;
         }
+
+        /* 顶栏用户信息区（<app-topbar variant="home"> 内部），沿用拆分前的间距 */
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .user-info {
+                gap: 10px;
+            }
+        }
