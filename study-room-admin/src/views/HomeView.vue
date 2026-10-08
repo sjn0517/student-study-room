@@ -48,11 +48,16 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted } from 'vue'
+import { onMounted } from 'vue'
 import { useBookingStore } from '@/stores/useBookingStore'
 import { ElMessage } from 'element-plus'
+import { getBookingStatusType, getBookingStatusText } from '@/utils/dict'
 
 const bookingStore = useBookingStore()
+
+// 状态展示统一走 utils/dict，避免每个页面各写一份映射
+const getStatusType = getBookingStatusType
+const getStatusText = getBookingStatusText
 
 // 刷新数据方法 —— 真正调用 Store 从后端重新拉取最新数据
 const refreshData = async () => {
@@ -62,27 +67,6 @@ const refreshData = async () => {
   } catch {
     ElMessage.error('刷新失败，请检查服务是否运行')
   }
-}
-
-// 状态显示相关方法
-const getStatusType = (status: string) => {
-  const types: Record<string, string> = {
-    pending: 'warning',
-    confirmed: 'success',
-    cancelled: 'danger',
-    completed: 'info'
-  }
-  return types[status] || 'info'
-}
-
-const getStatusText = (status: string) => {
-  const texts: Record<string, string> = {
-    pending: '待确认',
-    confirmed: '已确认',
-    cancelled: '已取消',
-    completed: '已完成'
-  }
-  return texts[status] || status
 }
 
 onMounted(async () => {
